@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 
+<bean id="dataSource"
+class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+<property name="url" value="jdbc:mysql://localhost:3306/test" />
+<property name="username" value="admin" />
+<property name="password" value="adminmysql" />
+</bean>
+-->
+
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+  <!-- access -->
+  <property name="driverClass" value="${db.driver}" />
+  <property name="jdbcUrl" value="${db.url}" />
+  <property name="user" value="${db.user}" />
+  <property name="password" value="${db.password}" />
+  <!-- pool sizing -->
+  <property name="initialPoolSize" value="3" />
+  <property name="minPoolSize" value="6" />
+  <property name="maxPoolSize" value="25" />
+  <property name="acquireIncrement" value="3" />
+  <property name="maxStatements" value="0" />
+  <!-- retries -->
+  <property name="acquireRetryAttempts" value="30" />
+  <property name="acquireRetryDelay" value="1000" /> <!-- 1s -->
+  <property name="breakAfterAcquireFailure" value="false" />
+  <!-- refreshing connections -->
+  <property name="maxIdleTime" value="180" /> <!-- 3min -->
+  <property name="maxConnectionAge" value="1800" /> <!-- 30min -->
+  <!-- timeouts and testing -->
+  <property name="checkoutTimeout" value="5000" /> <!-- 5s -->
+  <property name="idleConnectionTestPeriod" value="60" /> <!-- 60 -->
+  <property name="testConnectionOnCheckout" value="true" />
+  <property name="preferredTestQuery" value="SELECT 1" />
+  <property name="testConnectionOnCheckin" value="true" />
+</bean>
+
+<!-- 
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <property name="driverClassName" value="${db.driver}" />
+  <property name="url" value="${db.url}" />
+  <property name="username" value="${db.user}" />
+  <property name="password" value="${db.password}" />
+</bean>
+-->
+
+</beans>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<hibernate-configuration
+xlmn="http://www.hibernate.org/xsd/hibernate-configuration">
+
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/test</property>
+        <property name="hibernate.connection.username">admin</property>
+        <property name="hibernate.connection.password">adminmysql</property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="hibernate.connection.pool_size">1</property>
+
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <!-- <property name="current_session_context_class">thread</property> -->
+
+        <!-- Disable the second-level cache  -->
+        <!-- Hibernate 4 -->
+        <property name="hibernate.cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>      
+        <!-- Hibernate 3-->
+        <!--  <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property> -->
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="hibernate.show_sql">false</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Needed to fix issue where couldn't determine jdbc ref cursor support -->
+        <!-- <property name="temp.use_jdbc_metadata_defaults">false</property> -->
+
+        <mapping resource="uk/co/andyfennell/hibernate/domain/Event.hbm.xml"/>
+
+    </session-factory>
+
+</hibernate-configuration>

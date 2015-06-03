@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<tx:annotation-driven transaction-manager="txManager"/>
+
+<bean id="txManager"
+    class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<tx:advice id="txAdvice" transaction-manager="txManager">
+    <tx:attributes>
+        <tx:method name="get*" read-only="true" />
+        <tx:method name="*" />
+<!-- 
+        <tx:method name="add*"/>       
+        <tx:method name="fetch*" read-only="true" />
+-->               
+    </tx:attributes>
+</tx:advice>
+
+<!-- Instead of using aop can use @Transaction annotation -->
+<!-- 
+<aop:config>
+    <aop:pointcut id="eventServiceMethods"
+        expression="execution(* uk.co.andyfennell.service.*.*(..))" />
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="eventServiceMethods" />
+</aop:config>
+-->
+
+<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  <property name="locations">
+    <list>
+      <value>classpath:database.properties</value>
+    </list>
+  </property>
+</bean>
+
+<bean id="eventService"
+class="uk.co.andyfennell.service.EventServiceImpl">
+<property name="eventDao" ref="eventDao" />
+</bean>
+
+
+<bean id="eventDao"
+class="uk.co.andyfennell.model.hibernate.domain.EventDao">
+<property name="hibernateTemplate" ref="hibernateTemplate" />
+</bean>
+
+<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<bean id="sessionFactory"
+class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+<property name="dataSource" ref="dataSource" />
+<property name="mappingResources">
+<list>
+<value>uk/co/andyfennell/hibernate/domain/Event.hbm.xml</value>
+</list>
+</property>
+<property name="hibernateProperties">
+<props>
+<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+<!-- <prop key="hibernate.show_sql">${hibernate.show_sql}</prop> -->
+<prop key="hibernate.show_sql">true</prop>
+<prop key="hibernate.hbm2ddl.auto">update</prop>
+</props>
+</property>
+</bean>
+
+</beans>

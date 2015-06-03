@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+
+<!--
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <Pattern>%d{dd MMM YYYY HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+    </encoder>
+  </appender>
+-->
+
+  <appender name="webapp_LOGFILE" class="ch.qos.logback.core.FileAppender">
+    <file>${catalina.base}/logs/application.log</file>
+    <encoder>
+      <pattern>%d{dd MMM YYYY HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="uk.co.andyfennell.service" level="DEBUG" additivity="false">
+    <!--<appender-ref ref="STDOUT" />-->
+    <appender-ref ref="webapp_LOGFILE" />
+  </logger>
+
+  <root level="DEBUG">
+    <!--<appender-ref ref="STDOUT" />-->
+    <appender-ref ref="webapp_LOGFILE" />
+  </root>
+</configuration>
